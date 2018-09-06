@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 import {handleError} from '../utils';
+import {checkEmailAndUsername, checkPassword, generateToken, prepareToken, sendToken, createUser, authenticate, getCurrentUser, verifyLogin} from '../middleware';
 import {Users} from '../db-api'
 
 router.get('/', async function(req, res) {
@@ -31,5 +32,25 @@ router.post('/', async function(req, res) {
     handleError(error, res);
   }
 });
+
+router.get('/me', authenticate, getCurrentUser, async function(req, res){
+  res.status(200).send({success:true, me: req.user});
+})
+
+/*
+router.get('/follow/:userId', authenticate, getCurrentUser, async function(req, res){
+  let userFrom = req.user._id;
+  let userTo = req.params.user_id;
+  try {
+    let result = await Users.addFollower(userFrom, userTo);
+    res.status(200).send({success:true, result:result});
+  } catch (error) {
+    handleError(error,res);
+  }
+})*/
+
+router.post('/signup', checkEmailAndUsername, checkPassword, createUser, prepareToken, generateToken, sendToken);
+
+router.post('/login', verifyLogin, prepareToken, generateToken, sendToken)
 
 module.exports = router;

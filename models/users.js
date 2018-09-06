@@ -7,9 +7,9 @@ var UserSchema = new mongoose.Schema({
     birthDate: {type: Date, required: true},
     photo: {type: String},
     bio: {type: String},
-    username: {type: String},
-    password: {type: String},
-    email: {type: String},
+    username: {type: String, required: true},
+    password: {type: String, required: true},
+    email: {type: String, required: true},
     following: [{type: Schema.Types.ObjectId, ref: 'Users'}],
     followers: [{type: Schema.Types.ObjectId, ref: 'Users'}]
 });
