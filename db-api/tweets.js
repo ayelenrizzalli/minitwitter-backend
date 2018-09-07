@@ -16,5 +16,29 @@ export default {
 
   findByAuthor : function (userId) {
     return TweetModel.where('author', userId).sort({date: 'desc'}).populate('author', 'username photo');
+  },
+
+  like: async function (tweetId, userId) {
+    let tweetObject = await this.findById(tweetId);
+    let like = false;
+    let dislike = false;
+
+    if (tweetObject.dislikes.indexOf(userId) !== -1) {
+      tweetObject.dislikes.remove(userId)
+    }
+
+    if (tweetObject.likes.indexOf(userId) == -1) {
+      tweetObject.likes.push(userId);
+      like = true;
+    } else {
+      tweetObject.likes.remove(userId)
+    }
+
+    await tweetObject.save();
+
+    let likes = tweetObject.likes.length;
+    let dislikes = tweetObject.dislikes.length;
+    return { like , dislike , likes , dislikes }
   }
+
 }
