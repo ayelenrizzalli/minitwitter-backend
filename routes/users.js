@@ -50,17 +50,18 @@ router.get('/profile/:userId', authenticate, async function(req, res){
   }
 });
 
-/*
-router.get('/follow/:userId', authenticate, getCurrentUser, async function(req, res){
+router.post('/follow/:userId', authenticate, getCurrentUser, async function(req, res){
   let userFrom = req.user._id;
-  let userTo = req.params.user_id;
+  let userTo = req.params.userId;
   try {
-    let result = await Users.addFollower(userFrom, userTo);
-    res.status(200).send({success:true, result:result});
+    let followersCount = await Users.addFollower(userFrom, userTo);
+    res.status(200).send({
+      success:true, followersCount:followersCount
+    });
   } catch (error) {
     handleError(error,res);
   }
-})*/
+})
 
 router.post('/signup', checkEmailAndUsername, checkPassword, createUser, prepareToken, generateToken, sendToken);
 
