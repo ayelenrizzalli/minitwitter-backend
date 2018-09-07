@@ -35,7 +35,20 @@ router.post('/', async function(req, res) {
 
 router.get('/me', authenticate, getCurrentUser, async function(req, res){
   res.status(200).send({success:true, me: req.user});
-})
+});
+
+router.get('/profile/:userId', authenticate, async function(req, res){
+  let idProfile = req.params.userId;
+  try {
+    let user = await Users.findById(idProfile);
+    res.status(200).send({
+      success: true,
+      user: user
+    });
+  } catch (error){
+    handleError(error, res);
+  }
+});
 
 /*
 router.get('/follow/:userId', authenticate, getCurrentUser, async function(req, res){
