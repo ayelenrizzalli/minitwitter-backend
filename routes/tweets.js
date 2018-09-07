@@ -24,13 +24,24 @@ router.post('/like/:tweetId', authenticate, async function (req, res){
   try {
     let tweetId = req.params.tweetId;
     let userId = req.auth.id;
-    let {like, dislike, likes, dislikes} = await Tweets.like(tweetId, userId);
+    let result = await Tweets.like(tweetId, userId);
     res.status(200).send({
       success: true,
-      like: like,
-      dislike: dislike,
-      likes: likes,
-      dislikes: dislikes
+      result: result
+    });
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+router.post('/dislike/:tweetId', authenticate, async function (req, res){
+  try {
+    let tweetId = req.params.tweetId;
+    let userId = req.auth.id;
+    let result = await Tweets.dislike(tweetId, userId);
+    res.status(200).send({
+      success: true,
+      result: result
     });
   } catch (error) {
     handleError(error, res);
