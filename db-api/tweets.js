@@ -64,8 +64,21 @@ export default {
     return { tweetId, like , dislike , likes , dislikes }
   },
 
-  getTweetsFromUsers : function (usersList) {
-    return TweetModel.find({ 'author' : { $in : usersList }}).populate('author', 'username photo');
-  }
+  getFeed : async function (user) {
+    console.log(user);
+    let feed = await TweetModel.find({ 'author' : { $in : user.following }}).populate('author', 'username photo');
+    feed = feed.map(function(tweetObject){
+      tweetObject = tweetObject.toJSON();
+      tweetObject.like = false;
+      tweetObject.dislike = false;
+      if (tweetObject.likes.indexOf(user._id) !== -1)
+        tweetObject.like = true;
+      if (tweetObject.dislikes.indexOf(user._id) == -1)
+        tweetObject.dislike = true;
+      return tweetObject;
+    })
+    return feed;
+  },
+
 
 }

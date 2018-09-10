@@ -7,7 +7,7 @@ import {Users} from '../db-api'
 
 router.get('/', authenticate, getCurrentUser, async function(req, res) {
   try {
-    let feed = await Tweets.getTweetsFromUsers(req.user.following);
+    let feed = await Tweets.getFeed(req.user);
     res.status(200).send({
       success: true,
       feed: feed
@@ -16,5 +16,6 @@ router.get('/', authenticate, getCurrentUser, async function(req, res) {
     handleError(error, res);
   }
 });
+
 
 module.exports = router;
