@@ -62,6 +62,10 @@ export default {
     let likes = tweetObject.likes.length;
     let dislikes = tweetObject.dislikes.length;
     return { tweetId, like , dislike , likes , dislikes }
+  },
+
+  getTweetsFromUsers : function (usersList) {
+    return TweetModel.find({ 'author' : { $in : usersList }}).populate('author', 'username photo');
   }
 
 }
