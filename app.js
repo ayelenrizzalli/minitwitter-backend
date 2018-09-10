@@ -5,12 +5,17 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var tweetsRouter = require('./routes/tweets');
 var feedRouter = require('./routes/feed');
 
 var app = express();
+
+if(process.env.NODE_ENV !== 'production') {
+  require('dotenv').load();
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,7 +49,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var mongoDB = 'mongodb://127.0.0.1/minitwitter';
+var mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true});
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;

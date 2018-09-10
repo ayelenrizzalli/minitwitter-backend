@@ -1,8 +1,13 @@
 var express = require('express');
 var router = express.Router();
+var multiparty = require('multiparty');
+var http = require('http');
+var util = require('util');
 import {handleError} from '../utils';
 import {checkEmailAndUsername, checkPassword, generateToken, prepareToken, sendToken, createUser, authenticate, getCurrentUser, verifyLogin} from '../middleware';
 import {Users} from '../db-api'
+
+
 
 router.get('/', async function(req, res) {
   try {
@@ -61,7 +66,23 @@ router.post('/follow/:userId', authenticate, getCurrentUser, async function(req,
   } catch (error) {
     handleError(error,res);
   }
-})
+});
+
+router.post('/photo', authenticate, getCurrentUser, async function(req, res){
+  try {
+    var form = new multiparty.Form();
+
+    form.parse(req, async function(err, fields, files) {
+      let photoUrl = await Users.addProfilePhoto(req.user._id, files.photo[0].path);
+      res.status(200).send({
+        success:true, photoUrl:photoUrl
+      });
+    });
+
+  } catch (error) {
+    handleError(error,res);
+  }
+});
 
 router.post('/signup', checkEmailAndUsername, checkPassword, createUser, prepareToken, generateToken, sendToken);
 

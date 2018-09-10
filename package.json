@@ -9,14 +9,17 @@
   "dependencies": {
     "async": "^2.6.1",
     "bcrypt": "^3.0.0",
+    "cloudinary": "^1.11.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^6.0.0",
     "express": "~4.16.0",
     "express-jwt": "^5.3.1",
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.2.13",
     "morgan": "~1.9.0",
+    "multiparty": "^4.2.1",
     "pug": "2.0.0-beta11"
   },
   "devDependencies": {
