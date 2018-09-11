@@ -59,6 +59,10 @@ export default {
     return userToObject.following.length;
   },
 
+  getFollowers : async function (usersIdList) {
+    return await UserModel.find({ '_id' : { $in : usersIdList }});
+  },
+
   addProfilePhoto : async function (userId, path) {
     let photo = await cloudinary.uploader.upload(path, function(error, result) {console.log(result, error)});
     let userObject = await this.findById(userId);
