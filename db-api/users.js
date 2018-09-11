@@ -47,6 +47,18 @@ export default {
     return userToObject.followers.length;
   },
 
+  removeFollower : async function (userFromId, userToId) {
+    let userFromObject = await this.findById(userFromId);
+    let userToObject = await this.findById(userToId);
+    if (userToObject.followers.indexOf(userFromId) != -1){
+      userFromObject.following.remove(userToId);
+      userToObject.followers.remove(userFromId);
+      await userFromObject.save();
+      await userToObject.save();
+    }
+    return userToObject.following.length;
+  },
+
   addProfilePhoto : async function (userId, path) {
     let photo = await cloudinary.uploader.upload(path, function(error, result) {console.log(result, error)});
     let userObject = await this.findById(userId);

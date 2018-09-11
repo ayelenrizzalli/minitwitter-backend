@@ -68,6 +68,19 @@ router.post('/follow/:userId', authenticate, getCurrentUser, async function(req,
   }
 });
 
+router.post('/unfollow/:userId', authenticate, getCurrentUser, async function(req, res){
+  let userFrom = req.user._id;
+  let userTo = req.params.userId;
+  try {
+    let followingCount = await Users.removeFollower(userFrom, userTo);
+    res.status(200).send({
+      success:true, followingCount:followingCount
+    });
+  } catch (error) {
+    handleError(error,res);
+  }
+});
+
 router.post('/photo', authenticate, getCurrentUser, async function(req, res){
   try {
     var form = new multiparty.Form();
