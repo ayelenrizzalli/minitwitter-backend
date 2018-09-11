@@ -59,7 +59,7 @@ export default {
     return userToObject.following.length;
   },
 
-  getFollowers : async function (usersIdList) {
+  UsersFromIdList : async function (usersIdList) {
     return await UserModel.find({ '_id' : { $in : usersIdList }});
   },
 

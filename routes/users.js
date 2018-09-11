@@ -84,9 +84,21 @@ router.post('/unfollow/:userId', authenticate, getCurrentUser, async function(re
 router.get('/followers', authenticate, getCurrentUser, async function(req, res){
   let usersId = req.user.followers;
   try {
-    let followersList = await Users.getFollowers(usersId);
+    let followersList = await Users.UsersFromIdList(usersId);
     res.status(200).send({
       success:true, followersList:followersList
+    });
+  } catch (error) {
+    handleError(error,res);
+  }
+});
+
+router.get('/following', authenticate, getCurrentUser, async function(req, res){
+  let usersId = req.user.following;
+  try {
+    let followingList = await Users.UsersFromIdList(usersId);
+    res.status(200).send({
+      success:true, followingList:followingList
     });
   } catch (error) {
     handleError(error,res);
