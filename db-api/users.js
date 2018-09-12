@@ -59,7 +59,7 @@ export default {
     return userToObject.following.length;
   },
 
-  UsersFromIdList : async function (usersIdList) {
+  getUsersFromIdList : async function (usersIdList) {
     return await UserModel.find({ '_id' : { $in : usersIdList }});
   },
 
@@ -69,6 +69,11 @@ export default {
     userObject.photo = photo.url;
     await userObject.save();
     return photo.url;
+  },
+
+  updateUser : async function (userId, data){
+    let result = await UserModel.findByIdAndUpdate(userId, data, { new : true });
+    return result;
   }
 
 

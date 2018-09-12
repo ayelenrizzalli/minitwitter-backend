@@ -42,6 +42,18 @@ router.get('/me', authenticate, getCurrentUser, async function(req, res){
   res.status(200).send({success:true, me: req.user});
 });
 
+router.patch('/profile', authenticate, getCurrentUser, async function(req, res){
+  try {
+    let result = await Users.updateUser(req.user._id, req.body);
+    res.status(200).send({
+      success: true,
+      result: result
+    });
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
 router.get('/profile/:userId', authenticate, async function(req, res){
   let idProfile = req.params.userId;
   try {
@@ -84,7 +96,7 @@ router.post('/unfollow/:userId', authenticate, getCurrentUser, async function(re
 router.get('/followers', authenticate, getCurrentUser, async function(req, res){
   let usersId = req.user.followers;
   try {
-    let followersList = await Users.UsersFromIdList(usersId);
+    let followersList = await Users.getUsersFromIdList(usersId);
     res.status(200).send({
       success:true, followersList:followersList
     });
@@ -96,7 +108,7 @@ router.get('/followers', authenticate, getCurrentUser, async function(req, res){
 router.get('/following', authenticate, getCurrentUser, async function(req, res){
   let usersId = req.user.following;
   try {
-    let followingList = await Users.UsersFromIdList(usersId);
+    let followingList = await Users.getUsersFromIdList(usersId);
     res.status(200).send({
       success:true, followingList:followingList
     });
