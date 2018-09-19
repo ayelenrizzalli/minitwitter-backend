@@ -29,7 +29,7 @@ export const sendToken = async function (req, res) {
     res.setHeader('x-auth-token', req.token);
     try {
       let user = await Users.findById(req.user._id);
-      res.status(200).send(user);
+      res.status(200).send({user:user, token: req.token});
     } catch (error) {
       handleError(error,res);
     }

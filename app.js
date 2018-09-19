@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var cors = require ('cors');
 
 
 var indexRouter = require('./routes/index');
@@ -21,6 +22,18 @@ if(process.env.NODE_ENV !== 'production') {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+let whitelist = ['http://localhost:3000','http://localhost:80'];
+let corsOptions = {
+    origin: (origin, callback)=>{
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },credentials: true
+}
+
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
