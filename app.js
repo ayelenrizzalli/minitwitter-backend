@@ -25,7 +25,7 @@ app.set('view engine', 'pug');
 let whitelist = ['http://localhost:3000','http://localhost:80'];
 let corsOptions = {
     origin: (origin, callback)=>{
-        if (whitelist.indexOf(origin) !== -1) {
+        if (whitelist.indexOf(origin) !== -1 || !origin) {
             callback(null, true)
         } else {
             callback(new Error('Not allowed by CORS'))
